@@ -1,22 +1,23 @@
 import express from "express";
+
 import {
   getNames,
-  getName,
   createName,
   updateName,
   deleteName
 } from "../controllers/names.controller.js";
 
 import protect from "../middleware/auth.middleware.js";
+import adminOnly from "../middleware/admin.middleware.js";
 
 const router = express.Router();
 
-router.use(protect); // all routes protected
+router.use(protect);
 
 router.get("/", getNames);
-router.get("/:id", getName);
-router.post("/", createName);
-router.put("/:id", updateName);
-router.delete("/:id", deleteName);
+
+router.post("/", adminOnly, createName);
+router.put("/:id", adminOnly, updateName);
+router.delete("/:id", adminOnly, deleteName);
 
 export default router;
